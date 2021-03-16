@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { isUrlValid } from "../../utils";
+import { isUrlValid } from "../../src/utils";
 
 describe('Utils', () => {
     it('validates valid url', () => {
