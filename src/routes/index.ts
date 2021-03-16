@@ -52,7 +52,6 @@ router.post('/publish/:topic', async (req, res) => {
         }),
       );
     } catch (error) {
-      console.log(error);
       res.status(400).json({
         message: 'Could not publish to subscribers',
       });
