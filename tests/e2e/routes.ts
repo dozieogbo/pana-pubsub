@@ -2,6 +2,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../src/app';
 import responses from '../../src/constants/responses';
+import routes from '../../src/constants/routes';
 
 chai.use(chaiHttp);
 
@@ -42,7 +43,7 @@ describe('PubSub Endpoints', () => {
       });
   });
 
-  it('should publish to subscribers', (done) => {
+  it('should publish to subscribers', done => {
     chai
       .request(server)
       .post('/publish/nigeria')
@@ -55,5 +56,42 @@ describe('PubSub Endpoints', () => {
         expect(res.body.message).be.eql(responses.PUBLISHED);
 
         done();
-      });});
+      });
+  });
+
+  it('should return body of test 1', done => {
+    let data = {
+      title: 'Hello World'
+    };
+
+    chai
+      .request(server)
+      .post(routes.TEST_1)
+      .send(data)
+      .end((err, res) => {
+        expect(res).have.status(200);
+        expect(res.body).be.an('object');
+        expect(res.body).be.eql(data);
+
+        done();
+      });
+  });
+
+  it('should return body of test 2', done => {
+    let data = {
+      title: 'Hello World'
+    };
+
+    chai
+      .request(server)
+      .post(routes.TEST_2)
+      .send(data)
+      .end((err, res) => {
+        expect(res).have.status(200);
+        expect(res.body).be.an('object');
+        expect(res.body).be.eql(data);
+
+        done();
+      });
+  });
 });

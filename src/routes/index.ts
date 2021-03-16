@@ -8,7 +8,7 @@ const router = Router();
 const subscriptions: { [key: string]: string[] } = {};
 
 router.get(routes.INDEX, (req, res) => {
-  res.send('Welcome to the Panagea Test');
+  res.send('Welcome to the Pangaea Test');
 });
 
 router.post(routes.SUBSCRIBE, (req, res) => {
@@ -66,6 +66,18 @@ router.post(routes.PUBLISH, async (req, res) => {
   res.json({
     message: responses.PUBLISHED,
   });
+});
+
+router.post(routes.TEST_1, (req, res) => {
+  console.log(req.body);
+
+  res.json(req.body);
+});
+
+router.post(routes.TEST_2, (req, res) => {
+  console.log(req.body);
+  
+  res.json(req.body);
 });
 
 export default router;
