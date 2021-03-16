@@ -1,20 +1,23 @@
 import axios from 'axios';
 import { Router } from 'express';
+import { isUrlValid } from '../utils';
+import routes from '../constants/routes';
+import responses from '../constants/responses';
 
 const router = Router();
 const subscriptions: { [key: string]: string[] } = {};
 
-router.get('/', (req, res) => {
+router.get(routes.INDEX, (req, res) => {
   res.send('Welcome to the Panagea Test');
 });
 
-router.post('/subscribe/:topic', (req, res) => {
+router.post(routes.SUBSCRIBE, (req, res) => {
   const { topic } = req.params;
   const { url } = req.body;
 
   if (!isUrlValid(url)) {
     res.status(400).json({
-      message: 'Invalid subscription url',
+      message: responses.INVALID_SUBSCRIPTION_URL,
     });
 
     return;
@@ -34,7 +37,7 @@ router.post('/subscribe/:topic', (req, res) => {
   });
 });
 
-router.post('/publish/:topic', async (req, res) => {
+router.post(routes.PUBLISH, async (req, res) => {
   const { topic } = req.params;
 
   const normalizedTopic = topic.toLowerCase();
@@ -52,8 +55,8 @@ router.post('/publish/:topic', async (req, res) => {
         }),
       );
     } catch (error) {
-      res.status(400).json({
-        message: 'Could not publish to subscribers',
+      res.status(500).json({
+        message: responses.PUBLISH_FAILED,
       });
 
       return;
@@ -61,26 +64,8 @@ router.post('/publish/:topic', async (req, res) => {
   }
 
   res.json({
-    message: 'Published',
+    message: responses.PUBLISHED,
   });
 });
-
-const isUrlValid = (text: string) => {
-  if (!text) {
-    return false;
-  }
-
-  if (!text.startsWith('http')) {
-    text = 'http://' + text;
-  }
-
-  try {
-    const url = new URL(text);
-
-    return ['http:', 'https:'].includes(url.protocol);
-  } catch (error) {
-    return false;
-  }
-};
 
 export default router;
