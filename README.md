@@ -6,7 +6,7 @@ To set up, create a .env file (optional) and set the app port as follows.
 
 Install dependencies
 
-`yarn install`
+`yarn`
 
 Run app
 
